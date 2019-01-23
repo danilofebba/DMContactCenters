@@ -52,51 +52,51 @@ SET DATEFIRST 1
 WHILE @Data <= @DataFim
 BEGIN
     INSERT INTO [DW].[dmCale]
-        SELECT [SurrKeyDate]  = CONVERT(integer, CONVERT(varchar(8), @Data, 112))
-             , [Ano]          = CONVERT(smallint, YEAR(@Data))
-             , [NumeSeme]     = CONVERT(tinyint, CASE WHEN MONTH(@Data) < 7 THEN 1 ELSE 2 END)
-             , [NomeCompSeme] = CONVERT(varchar(11), CASE WHEN MONTH(@Data) < 7 THEN '1º semestre' ELSE '2º semestre' END)
-             , [NomeAbreSeme] = CONVERT(varchar(2), CASE WHEN MONTH(@Data) < 7 THEN 'S1' ELSE 'S2' END)
-             , [NumeTrim]     = CONVERT(tinyint, DATEPART(QUARTER, @Data))
-             , [NomeCompTrim] = CONVERT(varchar(12), CASE DATEPART(QUARTER, @Data)
-                                                         WHEN 1 THEN '1º trimestre'
-                                                         WHEN 2 THEN '2º trimestre'
-                                                         WHEN 3 THEN '3º trimestre'
-                                                         ELSE '4º trimestre'
-                                                     END)
-             , [NomeAbreTrim] = CONVERT(varchar(2), 'T' + CONVERT(varchar(1), DATEPART(QUARTER, @Data)))
-             , [NumeMes]      = CONVERT(tinyint, MONTH(@Data))
-             , [NomeCompMes]  = CONVERT(varchar(8), DATENAME(MONTH, @Data))
-             , [NomeAbreMes]  = CONVERT(varchar(3), DATENAME(MONTH, @Data))
-             , [UltiDiaMes]   = CONVERT(tinyint, DAY(EOMONTH(@Data)))
-             , [NumeQuin]     = CONVERT(tinyint, CASE WHEN DAY(@Data) < 16 THEN 1 ELSE 2 END)
-             , [NomeQuin]     = CONVERT(varchar(11), CASE WHEN DAY(@Data) < 16 THEN '1º quinzena' ELSE '2º quinzena' END)
-             , CONVERT(tinyint, DATEPART(ISO_WEEK, @Data))                                                                       AS [NumeSemaAno]     -- Número da Semana do Ano ISO 8601
-             , CONVERT(varchar(33), CASE WHEN DATEPART(ISO_WEEK, @Data) = 1 THEN
-                                        CONVERT(varchar(4), YEAR(DATEADD(DAY, 7 - DATEPART(WEEKDAY, @Data), @Data))) + '-' + 
-                                        CONVERT(varchar(3), 'S' + FORMAT(DATEPART(ISO_WEEK, @Data), '00')) + ': ' +
-                                        CONVERT(varchar(10), DATEADD(DAY, -DATEPART(WEEKDAY, @Data) + 1, @Data), 103) + ' - ' +
-                                        CONVERT(varchar(10), DATEADD(DAY, 7 - DATEPART(WEEKDAY, @Data), @Data), 103)
-                                    ELSE
-                                        CONVERT(varchar(4), YEAR(DATEADD(DAY, -DATEPART(WEEKDAY, @Data) + 1, @Data))) + '-' + 
-                                        CONVERT(varchar(3), 'S' + FORMAT(DATEPART(ISO_WEEK, @Data), '00')) + ': ' +
-                                        CONVERT(varchar(10), DATEADD(DAY, -DATEPART(WEEKDAY, @Data) + 1, @Data), 103) + ' - ' +
-                                        CONVERT(varchar(10), DATEADD(DAY, 7 - DATEPART(WEEKDAY, @Data), @Data), 103)
-                                    END)                                                                                         AS [NomeSemaAno]     -- Nome da Semana do Ano ISO 8601
-             , CONVERT(varchar(8), CASE WHEN DATEPART(ISO_WEEK, @Data) = 1 THEN
-                                       CONVERT(varchar(4), YEAR(DATEADD(DAY, 7 - DATEPART(WEEKDAY, @Data), @Data))) + '-' + 
-                                       CONVERT(varchar(3), 'S' + FORMAT(DATEPART(ISO_WEEK, @Data), '00'))
-                                   ELSE
-                                       CONVERT(varchar(4), YEAR(DATEADD(DAY, -DATEPART(WEEKDAY, @Data) + 1, @Data))) + '-' + 
-                                       CONVERT(varchar(3), 'S' + FORMAT(DATEPART(ISO_WEEK, @Data), '00'))
-                                   END)                                                                                          AS [NomeSemaAnoAbre] -- Nome da Semana do Ano Abreviado ISO 8601
-             , CONVERT(tinyint, DATEPART(WEEKDAY, @Data))                                                                        AS [NumeDiaSema]     -- Número do Dia da Semana
-             , CONVERT(varchar(13), DATENAME(WEEKDAY, @Data))                                                                    AS [NomeDiaSema]     -- Nome do Dia da Semana
-             , CONVERT(varchar(3), DATENAME(WEEKDAY, @Data))                                                                     AS [NomeDiaSemaAbre] -- Nome do Dia da Semana Abreviado
-             , [Data] = CONVERT(date, @Data)
-             , CONVERT(integer, DATEDIFF(SECOND, {d '1970-01-01'}, @Data))                                                       AS [UnixEpoc]        -- Posix Time ou Unix Epoch ou Unix Timestamp
-             , CONVERT(tinyint, DAY(@Data))                                                                                      AS [Dia]             -- Dia
-             , CONVERT(smallint, DATEPART(DAYOFYEAR, @Data))                                                                     AS [NumeDiaAno]      -- Número do Dia do Ano
+        SELECT [SurrKeyDate]     = CONVERT(integer, CONVERT(varchar(8), @Data, 112))
+             , [Ano]             = CONVERT(smallint, YEAR(@Data))
+             , [NumeSeme]        = CONVERT(tinyint, CASE WHEN MONTH(@Data) < 7 THEN 1 ELSE 2 END)
+             , [NomeCompSeme]    = CONVERT(varchar(11), CASE WHEN MONTH(@Data) < 7 THEN '1º semestre' ELSE '2º semestre' END)
+             , [NomeAbreSeme]    = CONVERT(varchar(2), CASE WHEN MONTH(@Data) < 7 THEN 'S1' ELSE 'S2' END)
+             , [NumeTrim]        = CONVERT(tinyint, DATEPART(QUARTER, @Data))
+             , [NomeCompTrim]    = CONVERT(varchar(12), CASE DATEPART(QUARTER, @Data)
+                                                            WHEN 1 THEN '1º trimestre'
+                                                            WHEN 2 THEN '2º trimestre'
+                                                            WHEN 3 THEN '3º trimestre'
+                                                            ELSE '4º trimestre'
+                                                        END)
+             , [NomeAbreTrim]    = CONVERT(varchar(2), 'T' + CONVERT(varchar(1), DATEPART(QUARTER, @Data)))
+             , [NumeMes]         = CONVERT(tinyint, MONTH(@Data))
+             , [NomeCompMes]     = CONVERT(varchar(8), DATENAME(MONTH, @Data))
+             , [NomeAbreMes]     = CONVERT(varchar(3), DATENAME(MONTH, @Data))
+             , [UltiDiaMes]      = CONVERT(tinyint, DAY(EOMONTH(@Data)))
+             , [NumeQuin]        = CONVERT(tinyint, CASE WHEN DAY(@Data) < 16 THEN 1 ELSE 2 END)
+             , [NomeQuin]        = CONVERT(varchar(11), CASE WHEN DAY(@Data) < 16 THEN '1º quinzena' ELSE '2º quinzena' END)
+             , [NumeSemaAno]     = CONVERT(tinyint, DATEPART(ISO_WEEK, @Data))
+             , [NomeCompSemaAno] = CONVERT(varchar(33), CASE WHEN DATEPART(ISO_WEEK, @Data) = 1 THEN
+                                                                 CONVERT(varchar(4), YEAR(DATEADD(DAY, 7 - DATEPART(WEEKDAY, @Data), @Data))) + '-' + 
+                                                                 CONVERT(varchar(3), 'S' + FORMAT(DATEPART(ISO_WEEK, @Data), '00')) + ': ' +
+                                                                 CONVERT(varchar(10), DATEADD(DAY, -DATEPART(WEEKDAY, @Data) + 1, @Data), 103) + ' - ' +
+                                                                 CONVERT(varchar(10), DATEADD(DAY, 7 - DATEPART(WEEKDAY, @Data), @Data), 103)
+                                                             ELSE
+                                                                 CONVERT(varchar(4), YEAR(DATEADD(DAY, -DATEPART(WEEKDAY, @Data) + 1, @Data))) + '-' + 
+                                                                 CONVERT(varchar(3), 'S' + FORMAT(DATEPART(ISO_WEEK, @Data), '00')) + ': ' +
+                                                                 CONVERT(varchar(10), DATEADD(DAY, -DATEPART(WEEKDAY, @Data) + 1, @Data), 103) + ' - ' +
+                                                                 CONVERT(varchar(10), DATEADD(DAY, 7 - DATEPART(WEEKDAY, @Data), @Data), 103)
+                                                        END)
+             , [NomeAbreSemaAno] = CONVERT(varchar(8), CASE WHEN DATEPART(ISO_WEEK, @Data) = 1 THEN
+                                                                CONVERT(varchar(4), YEAR(DATEADD(DAY, 7 - DATEPART(WEEKDAY, @Data), @Data))) + '-' + 
+                                                                CONVERT(varchar(3), 'S' + FORMAT(DATEPART(ISO_WEEK, @Data), '00'))
+                                                            ELSE
+                                                                CONVERT(varchar(4), YEAR(DATEADD(DAY, -DATEPART(WEEKDAY, @Data) + 1, @Data))) + '-' + 
+                                                                CONVERT(varchar(3), 'S' + FORMAT(DATEPART(ISO_WEEK, @Data), '00'))
+                                                       END)
+             , [NumeDiaSema]     = CONVERT(tinyint, DATEPART(WEEKDAY, @Data))
+             , [NomeCompDiaSema] = CONVERT(varchar(13), DATENAME(WEEKDAY, @Data))
+             , [NomeAbreDiaSema] = CONVERT(varchar(3), DATENAME(WEEKDAY, @Data))
+             , [Data]            = CONVERT(date, @Data)
+             , [UnixEpoc]        = CONVERT(integer, DATEDIFF(SECOND, {d '1970-01-01'}, @Data))
+             , [Dia]             = CONVERT(tinyint, DAY(@Data))
+             , [NumeDiaAno]      = CONVERT(smallint, DATEPART(DAYOFYEAR, @Data))
     SET @Data = DATEADD(DAY, 1, @Data);
 END;
 
