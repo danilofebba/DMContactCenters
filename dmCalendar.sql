@@ -20,7 +20,6 @@ CREATE TABLE [DW].[dmCale] (
     [FullNameSeme]    char(13)        NULL,          -- Full Name of Semester
     [ShorNameSeme]    char(7)         NULL,          -- Short Name of Semester
 
-    [NumeTrim]        tinyint         NULL,          -- Número do Trimestre
     [NomeCompTrim]    varchar(1)     NULL,          -- Nome Completo do Trimestre
     [NomeAbreTrim]    varchar(2)      NULL,          -- Nome Abreviado do Trimestre
     [NumeMes]         tinyint         NULL,          -- Número do Mês
@@ -78,8 +77,7 @@ BEGIN
          
      WHERE [nkDate] = @Date
     -- INSERT INTO [DW].[dmCale]
-    --     SELECT [NumeTrim]        = CONVERT(tinyint, DATEPART(QUARTER, @Data))
-    --          , [NomeCompTrim]    = CONVERT(varchar(12), CASE DATEPART(QUARTER, @Data)
+    --     SELECT [NomeCompTrim]    = CONVERT(varchar(12), CASE DATEPART(QUARTER, @Data)
     --                                                         WHEN 1 THEN '1º trimestre'
     --                                                         WHEN 2 THEN '2º trimestre'
     --                                                         WHEN 3 THEN '3º trimestre'
