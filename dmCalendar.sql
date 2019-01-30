@@ -75,7 +75,7 @@ WHILE @Date <= @EndDate
 BEGIN
     UPDATE [DW].[dmCale]
        SET [NomeSeme] = CONVERT(char(12), CASE WHEN MONTH(@Date) < 7 THEN CONVERT(char(4), YEAR(@Date)) + '-1º sem.' ELSE CONVERT(char(4), YEAR(@Date)) + '-2º sem.' END)
-
+         
      WHERE [nkDate] = @Date
     -- INSERT INTO [DW].[dmCale]
     --     SELECT [NumeTrim]        = CONVERT(tinyint, DATEPART(QUARTER, @Data))
