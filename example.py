@@ -1,13 +1,32 @@
-import random
-min = 1
-max = 6
+# coding: utf-8
 
-roll_again = "yes"
+NumberPhonesPerLead = 1
+NumberCustomersPortfolio = 1
 
-while roll_again == "yes" or roll_again == "y":
-    print "Rolling the dices..."
-    print "The values are...."
-    print random.randint(min, max)
-    print random.randint(min, max)
+def fnSocialSecurityNumber():
+    return "99.999.999-99"
 
-    roll_again = raw_input("Roll the dices again?")
+def fnFullName():
+    return "João da Silva Santos"
+
+def fnEmail():
+    return "joao.silva.santos@gmail.com"
+
+def fnPhoneNumbers():
+    return "(11) 2726-8693"
+
+for a in range(NumberCustomersPortfolio):
+
+    SocialSecurityNumber = "SocialSecurityNumber"
+    FullName = "FullName"
+    Email = "Email"
+
+    PhoneFieldNames = []
+    for b in range(NumberPhonesPerLead):
+        PhoneFieldNames.append("Phone" + str(b + 1))
+
+    PhoneNumbers = []
+    for b in range(NumberPhonesPerLead):
+        PhoneNumbers.append(fnPhoneNumbers())
+
+    print("INSERT INTO tblMailing (SocialSecurityNumber, FullName, Email, " + ', '.join(PhoneFieldNames) + ") VALUES (" + fnSocialSecurityNumber() + ", '" + fnFullName() + "', " + fnEmail() + ", " + ', '.join(PhoneNumbers) + ")")

@@ -15,6 +15,7 @@ GO
 CREATE TABLE [DW].[dmCale] (
     [skDate]          integer     NOT NULL,          -- Surrogate Key of the Date
     [nkDate]          date        NOT NULL,          -- Natural Key of the Date
+    [nkUnixEpoc]      integer         NULL,          -- Surogate Key of Posix Time or Unix Epoch or Unix Timestamp
     [Year]            smallint        NULL,          -- Year
     [NomeSeme]        char(12)        NULL,          -- Nome do Semestre
     [FullNameSeme]    char(13)        NULL,          -- Full Name of Semester
@@ -34,7 +35,6 @@ CREATE TABLE [DW].[dmCale] (
     [NumeDiaSema]     tinyint         NULL,          -- Número do Dia da Semana
     [NomeCompDiaSema] varchar(13)     NULL,          -- Nome Completo do Dia da Semana
     [NomeAbreDiaSema] varchar(3)      NULL,          -- Nome Abreviado do Dia da Semana
-    [UnixEpoc]        integer         NULL,          -- Posix Time ou Unix Epoch ou Unix Timestamp
     [Dia]             tinyint         NULL,          -- Dia
     [NumeDiaAno]      smallint        NULL,          -- Número do Dia do Ano
 );
@@ -49,7 +49,14 @@ SET DATEFIRST 1
 
 WHILE @Date <= @EndDate
 BEGIN
-    INSERT INTO [DW].[dmCale] ([skDate], [nkDate]) VALUES (CONVERT(integer, CONVERT(varchar(8), @Date, 112)), @Date);
+    INSERT INTO [DW].[dmCale] (
+        [skDate],
+        [nkDate],
+        [nkUnixEpoc]) 
+    VALUES (
+        CONVERT(integer, CONVERT(varchar(8), @Date, 112)),
+        @Date,
+        CONVERT(integer, DATEDIFF(SECOND, {d '1970-01-01'}, @Date)));
     SET @Date = DATEADD(DAY, 1, @Date);
 END;
 
@@ -60,8 +67,8 @@ WHILE @Date <= @EndDate
 BEGIN
     UPDATE [DW].[dmCale]
        SET [year]         = CONVERT(smallint, YEAR(@Date))
-         , [FullNameSeme] = CONVERT(char(13), CASE WHEN MONTH(@Date) < 7 THEN CONVERT(char(4), YEAR(@Date)) + '-1st Half' ELSE CONVERT(char(4), YEAR(@Date)) + '-2nd Half' END)
-         , [ShorNameSeme] = CONVERT(char(7), CASE WHEN MONTH(@Date) < 7 THEN CONVERT(char(4), YEAR(@Date)) + '-1H' ELSE CONVERT(char(4), YEAR(@Date)) + '-2H' END)
+         , [FullNameSeme] = CONVERT(char(13), CASE WHEN MONTH(@Date) < 7 THEN CONVERT(char(4), YEAR(@Date)) + ' 1st Half' ELSE CONVERT(char(4), YEAR(@Date)) + ' 2nd Half' END)
+         , [ShorNameSeme] = CONVERT(char(7), CASE WHEN MONTH(@Date) < 7 THEN CONVERT(char(4), YEAR(@Date)) + ' 1H' ELSE CONVERT(char(4), YEAR(@Date)) + ' 2H' END)
 
      WHERE [nkDate] = @Date
     SET @Date = DATEADD(DAY, 1, @Date);
@@ -73,7 +80,7 @@ SET LANGUAGE portuguese;
 WHILE @Date <= @EndDate
 BEGIN
     UPDATE [DW].[dmCale]
-       SET [NomeSeme] = CONVERT(char(12), CASE WHEN MONTH(@Date) < 7 THEN CONVERT(char(4), YEAR(@Date)) + '-1º sem.' ELSE CONVERT(char(4), YEAR(@Date)) + '-2º sem.' END)
+       SET [NomeSeme] = CONVERT(char(12), CASE WHEN MONTH(@Date) < 7 THEN CONVERT(char(4), YEAR(@Date)) + ' 1º sem.' ELSE CONVERT(char(4), YEAR(@Date)) + ' 2º sem.' END)
          
      WHERE [nkDate] = @Date
     -- INSERT INTO [DW].[dmCale]
@@ -113,7 +120,6 @@ BEGIN
     --          , [NomeCompDiaSema] = CONVERT(varchar(13), DATENAME(WEEKDAY, @Data))
     --          , [NomeAbreDiaSema] = CONVERT(varchar(3), DATENAME(WEEKDAY, @Data))
     --          , [Data]            = CONVERT(date, @Data)
-    --          , [UnixEpoc]        = CONVERT(integer, DATEDIFF(SECOND, {d '1970-01-01'}, @Data))
     --          , [Dia]             = CONVERT(tinyint, DAY(@Data))
     --          , [NumeDiaAno]      = CONVERT(smallint, DATEPART(DAYOFYEAR, @Data))
     SET @Date = DATEADD(DAY, 1, @Date);
