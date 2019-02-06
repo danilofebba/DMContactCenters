@@ -3,7 +3,7 @@ import random
 
 NumberPhonesPerLead = 1
 NumberCustomersPortfolio = 2
-PhoneType = 3 # {"phone":1,"cell phone":2, "both":3}3
+PhoneType = 3 # {"phone":1,"cell phone":2, "both":3}
 
 def fnSocialSecurityNumber():
     # the first nine digits of the social security number
