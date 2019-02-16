@@ -17,9 +17,9 @@ CREATE TABLE [DW].[dmCale] (
     [nkDate]          date        NOT NULL,          -- Natural Key of the Date
     [nkUnixEpoc]      integer         NULL,          -- Surogate Key of Posix Time or Unix Epoch or Unix Timestamp
     [Year]            smallint        NULL,          -- Year
-    [NomeSeme]        char(12)        NULL,          -- Nome do Semestre
     [FullNameSeme]    char(13)        NULL,          -- Full Name of Semester
     [ShorNameSeme]    char(7)         NULL,          -- Short Name of Semester
+    [NomeSeme]        char(12)        NULL,          -- Nome do Semestre
 
     [NomeCompTrim]    varchar(1)     NULL,          -- Nome Completo do Trimestre
     [NomeAbreTrim]    varchar(2)      NULL,          -- Nome Abreviado do Trimestre
