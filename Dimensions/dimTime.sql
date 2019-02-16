@@ -1,3 +1,3 @@
-
-SELECT "nkTime"
-  FROM generate_series('00:00:00'::time without time zone,'23:59:59'::time without time zone,interval '30 minute') AS "nkTime";
+SELECT ("skTime" * 60)::integer AS "skTime"
+     , '0:00'::time without time zone + ("skTime" || ' minute')::interval AS "nkTime"
+  FROM generate_series(0::integer, 1439::integer, 1::integer) AS "skTime"
