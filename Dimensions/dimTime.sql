@@ -1,4 +1,4 @@
-DECLARE @Minute integer = 1 /*Parameter*/
+DECLARE @Minute integer = 1/*Parameter*/
 ;WITH [dimTime] AS (
     SELECT CAST('00:00:00' AS time(0)) AS [nkTime]
      UNION ALL
@@ -20,7 +20,7 @@ SELECT -- Surrogate Key Time
                  ELSE 'noite'
             END AS varchar(9)) AS [NomePeri]
        -- Hour
-     , CAST(CONVERT(char(3), [nkTime]) + '00' AS char(5)) AS [Hour]
+     , CAST(CONVERT(char(3), [nkTime]) + '00' AS time(0)) AS [Hour]
        -- Half an Hour
-     , CAST(CASE WHEN DATEPART(MINUTE, [nkTime]) < 30 THEN CONVERT(char(3), [nkTime]) + '00' ELSE CONVERT(char(3), [nkTime]) + '30' END AS char(5)) AS [HalfHour]
-  FROM [dimTime] OPTION (MAXRECURSION 1439 /*Parameter*/)
+     , CASE WHEN DATEPART(MINUTE, [nkTime]) < 30 THEN CAST(CONVERT(char(3), [nkTime]) + '00' AS time(0)) ELSE CAST(CONVERT(char(3), [nkTime]) + '30' AS time(0)) END AS [HalfHour]
+  FROM [dimTime] OPTION (MAXRECURSION 1439/*Parameter*/)
