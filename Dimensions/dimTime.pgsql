@@ -19,4 +19,4 @@ SELECT -- Surrogate Key Time
      , CASE WHEN EXTRACT(MINUTE FROM "nkTime") < 30 THEN to_char("nkTime", 'HH24:00:00')::time(0) without time zone ELSE to_char("nkTime", 'HH24:30:00')::time(0) without time zone END AS "HalfHour"
   FROM (SELECT ("skTime" * 60)::integer AS "skTime"
              , '0:00'::time(0) without time zone + ("skTime" || ' minute')::interval AS "nkTime"
-          FROM generate_series(0::integer, 1439::integer, 1/*parameter*/::integer) AS "skTime") AS "dimTime" x
+          FROM generate_series(0::integer, 1439::integer, 1/*parameter*/::integer) AS "skTime") AS "dimTime"
