@@ -1,8 +1,8 @@
 # coding: utf-8
 import random
 
-NumberPhonesPerLead = 1
-NumberCustomersPortfolio = 2
+NumberPhonesPerLead = 2
+NumberCustomersPortfolio = 3
 PhoneType = 3 # {"phone":1,"cell phone":2, "both":3}
 
 def fnSocialSecurityNumber():
